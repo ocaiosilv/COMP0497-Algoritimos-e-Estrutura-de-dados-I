@@ -56,6 +56,4 @@ circular? Se sim, como ficaria a remoção? Seria mais ou menos eficiente?
 
     Quanto a eficiência, 
 
-    https://leetcode.com/problems/find-the-winner-of-the-circular-game/submissions/1973883985/
-
 */

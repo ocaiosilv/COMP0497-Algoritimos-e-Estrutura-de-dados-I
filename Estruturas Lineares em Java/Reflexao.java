@@ -28,25 +28,25 @@ circular? Se sim, como ficaria a remoção? Seria mais ou menos eficiente?
     "           class Solution {
                     public int Josephus(int n, int m) {
                         int[] people = new int[n];
-                        for(int i = 1; i <= people.length; i++) {
+                        for(int i = 1; i <= people.length; i++) {                            ->O(N)
                             people[i-1] = i;
                         }
-                        int pointer = 0;
-                        while (people.length > 1) {
-                            pointer = pointer + m-1 ;
-                            while (pointer > people.length - 1) {
+                        int pointer = 0; -> O(1)
+                        while (people.length > 1) {                                          ->O(N)
+                            pointer = pointer + m-1 ;   -> O(1)
+                            while (pointer > people.length - 1) {                               ->O(N)
                                 pointer = pointer - people.length;
                             }
-                            for(int i = pointer; i < people.length -1 ; i++){
+                            for(int i = pointer; i < people.length -1 ; i++){                   ->O(N)
                                 people[i] = people[i+1];
                             }
                             int[] peopleNew = new int[people.length - 1]; 
-                            for(int i = 0; i < peopleNew.length ; i++){
+                            for(int i = 0; i < peopleNew.length ; i++){                         -> O(N)
                                 peopleNew[i] = people[i] ;
                             }
-                            people = peopleNew;
+                            people = peopleNew;        -> o(1)
                         }
-                        return people[0];
+                        return people[0]; -> O(1)
                         
                     }
                 }"
@@ -54,6 +54,6 @@ circular? Se sim, como ficaria a remoção? Seria mais ou menos eficiente?
     A remoção é justamente a parte que usa copia todos os números da posição de exclusão i em diante para i-1 até a lenght da array -1(para que não de NullPointerException) e em seguida se cria uma copia dessa array sem a última posição
     para que se encurte a array.
 
-    Quanto a eficiência, 
+    Quanto a eficiência, ficaria O(N) + O(N) * ((O(n) + O(1) + O(n) + O(n) + O(1))) + O(1)   que fica, O(N) * O(N) == O(n²)
 
 */

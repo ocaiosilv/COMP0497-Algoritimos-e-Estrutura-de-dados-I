@@ -7,3 +7,4 @@
 - Nó genérico e Lista Simplesmente Encadeada
 - Busca e Inserção após um nó específico
 - Lista Circular: Problema de Josephus
+- Reflexão Comparativa

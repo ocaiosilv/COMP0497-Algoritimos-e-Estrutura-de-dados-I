@@ -17,14 +17,19 @@ quê?
 c) Circularidade.
 Seria possível resolver o Problema de Josephus usando um array em vez de uma lista
 circular? Se sim, como ficaria a remoção? Seria mais ou menos eficiente?
-    R: Dá sim pra resolver, assim que se definir M e N a quantidade de pessoas com N cria a array com esse tamanho, preenche
-    a array usando um for da primeira posição a última com números para indicar as "pessoas" começando em 1 e somando + 1, até preencher a lista, tendo isso, da pra definir um while que vai rodar enquanto a quantidade de pessoas dessa lista for maior que 1
-    cria uma variavel que seria o ponteiro para as posições na array começando na posição 0, dai pra poder garantir que ao somar M o ponteiro não seja maior que o tamanho maximo da array que seria N -1, é possivel colocar um 
-    while que vai checar se é maior que n-1, se for, ele faz o ponteiro que indica a posição (anteriormente somado a M-1(M-1 pela caracteristica de contagem de posições da array)) - o tamanho total da array, pois ai, se der por exemplo, 
-    a array com 9 pessoas vai de 0 a 8 em posições, se o ponteiro der 10, ele vai pra 10-8 posição, que seria a 3° pessoa que fica na 2° posição da array. O outro loop, será para "remover" a pessoa naquela posição do ponteiro, 
-    que basicamente copia o i+1 para posição i, "trazendo os números" em contexto visual (1,2,3,4,5,6) pessoa 3 elimidada, (1,2,4,5,6,6)-> pos eliminação, e então, so resta o ultimo loop que na verdade é a substituição da array 
-    por uma copia com -1 posição, então ele cria uma array com o tamanho de pessoas -1, vai copiar de i pra i nas duas arrays a velha e a nova, porém a nova NÃO tem o ultimo numero da velha, e então só se é substituida a array 
-    velha pela nova, começando o ciclo denovo até que o tamanho da lista seja 1.
+    R:Dá sim pra resolver, assim que se definem M e N (sendo N a quantidade de pessoas), criamos uma array com esse tamanho N. Depois, preenche a array usando um for da primeira posição até a última com números que representam as "pessoas", começando em 1 e somando +1 até preencher.
+    Depois, dá pra definir um while que vai rodar enquanto a quantidade de pessoas dessa lista for maior que 1. Antes dele, define uma variável que será o ponteiro para as posições na array, começando na posição 0.
+    Então, dentro do while se soma M - 1 ao ponteiro, essa soma será como o pulo vai funcionar( M-1 por conta da array começar na pos 0), mas para garantir que ao somar M o ponteiro não ultrapasse o tamanho máximo da array (que seria N - 1), fazemos um laço while pra enquanto esse valor for maior que length - 1, basta subtrair o tamanho total da array de ponteiro,
+    até o ponteiro parar em uma posição válida como se fosse na lista encadeada "circulando".
+        Exemplo:
+        Se a array tem 9 pessoas (índices de 0 a 8) e o ponteiro chega em 10, faz:
+            10 - 9 = 1
+        ficando dentro do escopo de índices possiveis.
+    Depois disso, faz outro loop que será responsável por "remover" a pessoa naquela posição do ponteiro. Basicamente ele vai copiando o valor da posição i+1 para i, deslocando os elementos à direita uma posição para a esquerda sem chegar na úlitma pos pra não dar nullPointerException;
+        Exemplo:
+        (1,2,3,4,5,6) -> pessoa 3° eliminada == (1,2,4,5,6,6)
+    Ultima coisa é criar uma nova array com tamanho da array atual -1 de tamanho, copiando os elementos da array antiga para a nova, ignorando o último valor (Ja que ele foi "duplicado" no loop anterior). Depois disso, torna a array antiga = a array nova para conseguir finalizar a remoção.
+    Esse processo se repete até que o tamanho da lista seja 1, e então o valor restante é retornado.
     "           class Solution {
                     public int Josephus(int n, int m) {
                         int[] people = new int[n];
@@ -34,8 +39,8 @@ circular? Se sim, como ficaria a remoção? Seria mais ou menos eficiente?
                         int pointer = 0; -> O(1)
                         while (people.length > 1) {                                          ->O(N)
                             pointer = pointer + m-1 ;   -> O(1)
-                            while (pointer > people.length - 1) {                               ->O(N)
-                                pointer = pointer - people.length;
+                            if (pointer > people.length - 1) {                               ->O(1)
+                                pointer = pointer % people.length;
                             }
                             for(int i = pointer; i < people.length -1 ; i++){                   ->O(N)
                                 people[i] = people[i+1];
@@ -54,6 +59,7 @@ circular? Se sim, como ficaria a remoção? Seria mais ou menos eficiente?
     A remoção é justamente a parte que usa copia todos os números da posição de exclusão i em diante para i-1 até a lenght da array -1(para que não de NullPointerException) e em seguida se cria uma copia dessa array sem a última posição
     para que se encurte a array.
 
-    Quanto a eficiência, ficaria O(N) + O(N) * ((O(n) + O(1) + O(n) + O(n) + O(1))) + O(1)   que fica, O(N) * O(N) == O(n²)
+    Quanto a eficiência, ficaria O(N) + O(N) * ((O(1) + O(1) + O(n) + O(n) + O(1))) + O(1)   que fica, O(N) * O(N) == O(n²), sendo assim num geral ele seria mais lento que na lista encadeada, que seria O(N x M) ja que seria o tempo de construir (N) + 
+    (M) que seriam as repetições de pular, porém, se N = M no modelo de nodes, fica O( N x N) que também é o(n²).
 
 */
